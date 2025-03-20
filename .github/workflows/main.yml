@@ -2,7 +2,7 @@ name: CI-CD
 on:
   push:
     branches: ["main"]
-  workflow dispatch:
+  workflow_dispatch:
 
 jobs:
   CI:
@@ -12,6 +12,7 @@ jobs:
       - run: echo "Executar o Docker Build"
       - run: echo "Enviar a imagem Docker para o Docker Hub"
   CD:
+    needs: [CI]
     runs-on: ubuntu-latest
     steps:
       - run: echo "Obter o código"
