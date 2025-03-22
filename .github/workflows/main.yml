@@ -21,11 +21,27 @@ jobs:
           context: ./src
           push: true
           file: ./src/Dockerfile
-          tags: ismael0711/fake-shop:v1
+          tags: |
+            ismael0711/fake-shop:v${{ github.run_mumber }}
+            ismael0711/fake-shop
+
   CD:
     needs: [CI]
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Obter o código"
-      - run: echo "Configurar o kubeconfig"
-      - run: echo "Executar o apply"
+      - name: Obtendo o codigo
+        uses: actions/checkout@v3
+
+      - uses: azure/k8s-set-context@v4
+        with:
+           method: kubeconfig
+           kubeconfig: ${{ secrets.K8S_KUBECONFIG }}
+
+      - uses: Azure/k8s-deploy@v5
+        with:
+          namespace: 'myapp'
+          manifests: |
+            k8s/deployment.yaml
+          images: |
+            ismael0711/fake-shop:v${{ github.run_mumber }}
+        
