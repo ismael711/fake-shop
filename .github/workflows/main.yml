@@ -50,7 +50,7 @@ jobs:
           
       - name: Update deployment file
         run: |
-          sed -i "s|image: .*|image: ismael0711/fake-shop:v${{ github.run_number }}|g" app/k8s/deployment.yaml
+          sed -i "s|image: .*|image: ismael0711/fake-shop:v${{ github.run_number }}|g" src/k8s/deployment.yaml
   
       - name: Apply deployment
-        run: kubectl apply -f app/k8s/deployment.yaml
+        run: kubectl apply -f src/k8s/deployment.yaml
